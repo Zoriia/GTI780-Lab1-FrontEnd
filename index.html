@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+    <script src="handleFetch.js">
+    </script>
+    <head>
+        <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+        <meta charset="utf-8" />
+        <title>Lab 1 - Equipe 9</title>
+    </head>
+    <body>
+        <h1>Raspberry PI</h1>
+        <table id="myTable">
+            <tr>
+                <th></th>
+                <th>Temperature</th>
+                <th>Humiditer</th>
+            </tr>
+            <tr>
+                <td>Actuelle</td>
+                <td class="actuelleTemp"></td>
+                <td class="actuelleHumid"></td>
+            </tr>
+            <tr>
+                <td>Moyenne</td>
+                <td class="moyenneTemp"></td>
+                <td class="moyenneHumid"></td>
+            </tr>
+        </table>
+
+        <h1>Historique Temperature</h1>
+
+        <table id="myTableHistoriqueTemp">
+            <tr>
+                <th>Date</th>
+                <th>Valeur</th>
+            </tr>
+        </table>
+
+    </body>
+</html>
