@@ -38,6 +38,7 @@ const graphTempData = {
 // TEMPERATURE FETCHERS AND HANDLERS //
 // ################################# //
 
+// Fetch the current temperature
 setInterval(function() {
     fetch("/sensors/temperature").then(function(response) {
     if (response.status !== 200) {
@@ -59,6 +60,28 @@ setInterval(function() {
     });
 }, 3000); 
 
+
+// Fetch the average of 30 temperatures
+setInterval(function() {
+    fetch("/sensors/temperature/30/avg").then(function(response) {
+    if (response.status !== 200) {
+        // Update app state with the error, no data
+        alert('Failed to fetch ' + response.status);
+    } else {
+        // Examine the text in the response
+        response.json().then(function(data) {
+
+            // Update app state with the new data, no error
+            updateTemperatureMoyenne(data.temperature);
+            
+        }).catch(function(err) {
+            // Update app state with the error, no data
+
+            alert(err);
+        });
+    }
+    });
+}, 3000); 
 
 // Historique de la temperature ex: /sensors/temperature/5
 setInterval(function() {
@@ -91,56 +114,29 @@ function updateTemperatureActuelle(temp){
     row[1].cells[1].innerHTML = parseFloat(temp);
 }
 
+
+function updateTemperatureMoyenne(temp){
+    var table = document.getElementById('myTable');
+    var row = table.rows; 
+
+    row[2].cells[1].innerHTML = parseFloat(temp);
+}
+
 async function updateTemperatureHistorique(tempHist){
-    /*
-    
-    var tempHistTable = document.getElementById('myTableHistoriqueTemp');
-
-    var tempHistRows = tempHistTable.rows;
-
-    var dataRowCount = 0; // Used to iterate over the tempHist received from server
-
-    if(tempHistRows.length == (maxHist+1)){
-        for (var i = 0, row; row = tempHistRows[i]; i++) {
-            //iterate through rows
-            //rows would be accessed using the "row" variable assigned in the for loop
-
-            var histValue = tempHist[dataRowCount]
-            tempHistTable.rows[i].cells[0] =  histValue[0] // Date is stored in subscript 0
-            tempHistTable.rows[i].cells[1] =  histValue[1] // Temperature is stored in subscript 0
-
-            dataRowCount++; 
-         }
-
-    }else if(tempHistRows.length == 0){
-        for 
-
-
-
-
-
-    } else{
-
-    }
-
-
-    
-    */
-
+    emptyAndCreateTable('myTableHistoriqueTemp', tempHist)
 
 
     // MAKES THE GRAPH
     xTempsLabels.push(tempHist[0])
     yTempData.push(tempHist[1])
-    // Logs 21.2
 
-    console.log(tempHist[1][1])
 }
 
 // ############################### //
 // HUMIDITER FETCHERS AND HANDLERS //
 // ############################### //
 
+// Fetch the current humidity
 setInterval(function() {
     fetch("/sensors/humidity").then(function(response) {
     if (response.status !== 200) {
@@ -163,9 +159,31 @@ setInterval(function() {
 }, 3000); 
 
 
+// Fetch the average of 30 huimities
+setInterval(function() {
+    fetch("/sensors/humidity/30/avg").then(function(response) {
+    if (response.status !== 200) {
+        // Update app state with the error, no data
+        alert('Failed to fetch ' + response.status);
+    } else {
+        // Examine the text in the response
+        response.json().then(function(data) {
+
+            // Update app state with the new data, no error
+            updateHumiditerMoyenne(data.humidity);
+            
+        }).catch(function(err) {
+            // Update app state with the error, no data
+
+            alert(err);
+        });
+    }
+    });
+}, 3000); 
+
 // Historique de l'humiditer ex: /sensors/humiditer/5
 setInterval(function() {
-    fetch("/sensors/humidity/5").then(function(response) {
+    fetch("/sensors/humidity/30").then(function(response) {
     if (response.status !== 200) {
         // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
@@ -194,7 +212,46 @@ function updateHumiditerActuelle(humid){
     row[1].cells[2].innerHTML = humid;
 }
 
-function updateHumiditerHistorique(humidHist){
-    // Logs first humidity date
-    console.log(humidHist[0])
+function updateHumiditerMoyenne(humid){
+    var table = document.getElementById('myTable');
+    var row = table.rows; 
+    row[2].cells[2].innerHTML = humid;
+}
+
+async function updateHumiditerHistorique(humidHist){
+    emptyAndCreateTable('myTableHistoriqueHumid', humidHist)
+}
+
+
+
+// ------- UPDATE HELPER FUNCTIONS ---------- // 
+
+function emptyAndCreateTable(tableName, histData){ 
+    
+    var tableHeaderRowCount = 1;
+    var table = document.getElementById(tableName);    
+    var tableRows = table.rows;
+    var rowCount = tableRows.length;
+    
+    // EMPTY TABLE
+    for (var i = tableHeaderRowCount; i < rowCount; i++) {
+        table.deleteRow(tableHeaderRowCount);
+    }
+
+    // Create Table
+    for(var j = 0; j < histData.length; j++){
+        var rowData = histData[j]
+
+        var rowCount = tableRows.length;
+        var row = table.insertRow(rowCount)
+
+        var cell1 = row.insertCell(0)
+        cell1.innerHTML = rowData[0];
+
+        var cell2 = row.insertCell(1)
+        cell2.innerHTML = rowData[1];
+
+    }
+
+
 }

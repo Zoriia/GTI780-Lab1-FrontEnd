@@ -35,3 +35,14 @@ app.get('/sensors/temperature/:histValue', function (req, res) {
 app.get('/meteo', function (req, res) {
     res.sendfile('index.html');
 });
+
+
+app.get('/sensors/temperature/30/avg', function (req, res) {
+    var temp = {"temperature" : 29.5};
+    res.send(JSON.stringify(temp));
+});
+
+app.get('/sensors/humidity/30/avg', function (req, res) {
+    var humidity = {"humidity" : 30.5};
+    res.send(JSON.stringify(humidity));
+});
