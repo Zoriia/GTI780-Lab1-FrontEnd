@@ -1,5 +1,6 @@
 ﻿var express = require('express');
 var app = express();
+var count = 0; 
 app.use(express.static(__dirname));
 
 app.get('/', function (req, res) {
@@ -27,8 +28,13 @@ app.get('/sensors/humidity/:histValue', function (req, res) {
 });
 
 app.get('/sensors/temperature/:histValue', function (req, res) {
-    
-    var tempHist = [[Date(), 21.4],[Date(), 21.2],[Date(), 21.7],[Date(), 21.8],[Date(), 21.1], [Date(), 21.5]]
+    if(count != 9){
+        var tempHist = [[Date(), 21.4],[Date(), 21.2],[Date(), 21.7],[Date(), 21.8],[Date(), 21.1], [Date(), 21.5]]
+        
+    }else{
+        var tempHist = [[Date(), 22.4],[Date(), 22.2],[Date(), 22.7],[Date(), 22.8],[Date(), 22.1], [Date(), 22.5], [Date(), 23.6], [Date(), 23.7]]
+    }
+    count++; 
     res.send(JSON.stringify(tempHist));
 });
 
