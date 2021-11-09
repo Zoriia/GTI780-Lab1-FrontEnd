@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
-    <script src="handleFetch.js">
-    </script>
+    <script src="handleFetch.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <head>
         <style>
             table {
@@ -51,6 +51,18 @@
                 <th>Valeur</th>
             </tr>
         </table>
-
+        <h2>Graphique de la tempépature(°c) par rapport au temps</h2>
+        <div>
+            <canvas id="tempChart"></canvas>
+        </div>
+        <h2>Graphique de l'humidité par rapport au temps</h2>
+        <div>
+            <canvas id="humChart"></canvas>
+        </div>
     </body>
+    <script>
+        // Draw graphs
+        const tempChart = new Chart(document.getElementById('tempChart'),configTempGraph);
+        const humChart = new Chart(document.getElementById('humChart'),configHumGraph);
+    </script>
 </html>

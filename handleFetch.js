@@ -1,8 +1,38 @@
-﻿
+﻿const maxHist = 30; 
+const yTempData = [];
+const xTempsLabels = [];
+const yHumData = [];
+const xHumLabels = [];
 
 
-const maxHist = 30; 
+const graphTempData = {
+    labels: xTempsLabels,
+    datasets: [{
+      label: 'Température',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: yTempData
+    }]
+  };
 
+  const graphHumData = {
+    labels: xHumLabels,
+    datasets: [{
+      label: 'Humidité',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: yHumData
+    }]
+  };
+  const configTempGraph = {
+    type: 'line',
+    data: graphTempData
+  };
+
+  const configHumGraph = {
+      type: 'line',
+      data: graphHumData
+  }
 
 // ################################# //
 // TEMPERATURE FETCHERS AND HANDLERS //
@@ -61,7 +91,7 @@ function updateTemperatureActuelle(temp){
     row[1].cells[1].innerHTML = parseFloat(temp);
 }
 
-function updateTemperatureHistorique(tempHist){
+async function updateTemperatureHistorique(tempHist){
     /*
     
     var tempHistTable = document.getElementById('myTableHistoriqueTemp');
@@ -100,8 +130,10 @@ function updateTemperatureHistorique(tempHist){
 
 
     // MAKES THE GRAPH
-
+    xTempsLabels.push(tempHist[0])
+    yTempData.push(tempHist[1])
     // Logs 21.2
+
     console.log(tempHist[1][1])
 }
 
