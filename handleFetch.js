@@ -85,7 +85,7 @@ setInterval(function() {
 
 // Historique de la temperature ex: /sensors/temperature/5
 setInterval(function() {
-    fetch("/sensors/temperature/6").then(function(response) {
+    fetch("/sensors/temperature/30").then(function(response) {
     if (response.status !== 200) {
         // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
