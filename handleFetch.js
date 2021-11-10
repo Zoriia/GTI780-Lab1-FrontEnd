@@ -42,15 +42,15 @@ var graphHumData = {
 setInterval(function() {
     fetch("/sensors/temperature").then(function(response) {
     if (response.status !== 200) {
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
         response.json().then(function(data) {
-            //update temp actuelle
+            removeError()
             updateTemperatureActuelle(data);
             
         }).catch(function(err) {
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -61,16 +61,16 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/temperature/30/avg").then(function(response) {
     if (response.status !== 200) {
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
         response.json().then(function(data) {
-            // update temperature moyenne
+            removeError()
             updateTemperatureMoyenne(data);
             
         }).catch(function(err) {
-            // Alert state with the error, no data
+            // sendError state with the error, no data
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -80,16 +80,16 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/temperature/30").then(function(response) {
     if (response.status !== 200) {
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
 
         response.json().then(function(data) {
-            // updateTempHist
+            removeError()
             updateTemperatureHistorique(data);
             
         }).catch(function(err) {
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -167,15 +167,15 @@ async function updateTemperatureHistorique(tempHist){
 setInterval(function() {
     fetch("/sensors/humidity").then(function(response) {
     if (response.status !== 200) {
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
         response.json().then(function(data) {
-
+            removeError()
             updateHumiditerActuelle(data);
             
         }).catch(function(err) {
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -186,15 +186,15 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/humidity/30/avg").then(function(response) {
     if (response.status !== 200) {
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
         response.json().then(function(data) {
-
+            removeError()
             updateHumiditerMoyenne(data);
             
         }).catch(function(err) {
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -205,15 +205,15 @@ setInterval(function() {
     fetch("/sensors/humidity/30").then(function(response) {
     if (response.status !== 200) {
 
-        alert('Failed to fetch ' + response.status);
+        sendError('Une erreur est survenue. Veuillez patienter pendant que nous recontactons le serveur');
     } else {
         response.json().then(function(data) {
-
+            removeError()
             updateHumiditerHistorique(data);
             
         }).catch(function(err) {
 
-            alert(err);
+            sendError(err);
         });
     }
     });
@@ -320,4 +320,14 @@ function emptyAndCreateTable(tableName, histData){
     }
 
 
+}
+
+function sendError(message) {
+    var errorDiv = document.getElementById('errorMessage');
+    errorDiv.innerHTML = message
+}
+
+function removeError() {
+    var errorDiv = document.getElementById('errorMessage');
+    errorDiv.innerHTML = ''
 }
