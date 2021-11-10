@@ -1,0 +1,29 @@
+{
+  "name": "gti780-lab1-frontend",
+  "version": "1.0.0",
+  "description": "The application simulates the front-end of a server application connected to a rasberry-pi that generates temperature and humidity values based on its sensors.",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "chart.js": "^3.6.0",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "node.js": "^0.0.1-security",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zoriia/GTI780-Lab1-FrontEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zoriia/GTI780-Lab1-FrontEnd/issues"
+  },
+  "homepage": "https://github.com/Zoriia/GTI780-Lab1-FrontEnd#readme"
+}

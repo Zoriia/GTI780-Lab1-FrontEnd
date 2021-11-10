@@ -49,7 +49,7 @@ setInterval(function() {
         response.json().then(function(data) {
 
             // Update app state with the new data, no error
-            updateTemperatureActuelle(data.temperature);
+            updateTemperatureActuelle(data);
             
         }).catch(function(err) {
             // Update app state with the error, no data
@@ -72,7 +72,7 @@ setInterval(function() {
         response.json().then(function(data) {
 
             // Update app state with the new data, no error
-            updateTemperatureMoyenne(data.temperature);
+            updateTemperatureMoyenne(data);
             
         }).catch(function(err) {
             // Update app state with the error, no data
@@ -147,7 +147,7 @@ setInterval(function() {
         response.json().then(function(data) {
 
             // Update app state with the new data, no error
-            updateHumiditerActuelle(data.humidity);
+            updateHumiditerActuelle(data);
             
         }).catch(function(err) {
             // Update app state with the error, no data
@@ -170,7 +170,7 @@ setInterval(function() {
         response.json().then(function(data) {
 
             // Update app state with the new data, no error
-            updateHumiditerMoyenne(data.humidity);
+            updateHumiditerMoyenne(data);
             
         }).catch(function(err) {
             // Update app state with the error, no data
