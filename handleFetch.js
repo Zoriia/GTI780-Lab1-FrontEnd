@@ -1,11 +1,11 @@
 ﻿const maxHist = 30; 
-const yTempData = [];
-const xTempsLabels = [];
-const yHumData = [];
-const xHumLabels = [];
+var yTempData = [];
+var xTempsLabels = [];
+var yHumData = [];
+var xHumLabels = [];
 
 
-const graphTempData = {
+var graphTempData = {
     labels: xTempsLabels,
     datasets: [{
       label: 'Température',
@@ -15,7 +15,7 @@ const graphTempData = {
     }]
   };
 
-  const graphHumData = {
+var graphHumData = {
     labels: xHumLabels,
     datasets: [{
       label: 'Humidité',
@@ -24,12 +24,12 @@ const graphTempData = {
       data: yHumData
     }]
   };
-  const configTempGraph = {
+  var configTempGraph = {
     type: 'line',
     data: graphTempData
   };
 
-  const configHumGraph = {
+  var configHumGraph = {
       type: 'line',
       data: graphHumData
   }
@@ -42,17 +42,13 @@ const graphTempData = {
 setInterval(function() {
     fetch("/sensors/temperature").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
         response.json().then(function(data) {
-
-            // Update app state with the new data, no error
-            updateTemperatureActuelle(data);
+            //update temp actuelle
+            updateTemperatureActuelle(data.temperature);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
 
             alert(err);
         });
@@ -65,17 +61,14 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/temperature/30/avg").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
         response.json().then(function(data) {
-
-            // Update app state with the new data, no error
-            updateTemperatureMoyenne(data);
+            // update temperature moyenne
+            updateTemperatureMoyenne(data.temperature);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
+            // Alert state with the error, no data
 
             alert(err);
         });
@@ -87,17 +80,14 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/temperature/30").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
-        response.json().then(function(data) {
 
-            // Update app state with the new data, no error
+        response.json().then(function(data) {
+            // updateTempHist
             updateTemperatureHistorique(data);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
 
             alert(err);
         });
@@ -125,10 +115,44 @@ function updateTemperatureMoyenne(temp){
 async function updateTemperatureHistorique(tempHist){
     emptyAndCreateTable('myTableHistoriqueTemp', tempHist)
 
+    var targetCanvas = document.getElementById('tempChart');
+    var canvasContainer = document.getElementById('tempCanvasContainer'); 
+
+    targetCanvas.remove();
+
+    canvasContainer.innerHTML = '<canvas id="tempChart"></canvas>'; 
+    var targetCanvas = document.getElementById('tempChart');
+
+    xTempsLabels = [];
+    yTempData = [];
+    
+    var graphTempData = {
+        labels: xTempsLabels,
+        datasets: [{
+          label: 'Température',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: yTempData
+        }]
+      };
+
+    var configTempGraph = {
+        type: 'line',
+        data: graphTempData
+      };
+    
 
     // MAKES THE GRAPH
-    xTempsLabels.push(tempHist[0])
-    yTempData.push(tempHist[1])
+    for(var i = 0; i < tempHist.length; i++){
+        var tempHistVal = tempHist[i];
+        xTempsLabels.push(tempHistVal[0]);
+        yTempData.push(tempHistVal[1]);
+    }
+    
+
+    tempChart = new Chart(targetCanvas, configTempGraph);
+    
+
 
 }
 
@@ -140,17 +164,13 @@ async function updateTemperatureHistorique(tempHist){
 setInterval(function() {
     fetch("/sensors/humidity").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
         response.json().then(function(data) {
 
-            // Update app state with the new data, no error
-            updateHumiditerActuelle(data);
+            updateHumiditerActuelle(data.humidity);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
 
             alert(err);
         });
@@ -163,17 +183,13 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/humidity/30/avg").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
         response.json().then(function(data) {
 
-            // Update app state with the new data, no error
-            updateHumiditerMoyenne(data);
+            updateHumiditerMoyenne(data.humidity);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
 
             alert(err);
         });
@@ -185,17 +201,14 @@ setInterval(function() {
 setInterval(function() {
     fetch("/sensors/humidity/30").then(function(response) {
     if (response.status !== 200) {
-        // Update app state with the error, no data
+
         alert('Failed to fetch ' + response.status);
     } else {
-        // Examine the text in the response
         response.json().then(function(data) {
 
-            // Update app state with the new data, no error
             updateHumiditerHistorique(data);
             
         }).catch(function(err) {
-            // Update app state with the error, no data
 
             alert(err);
         });
@@ -219,7 +232,49 @@ function updateHumiditerMoyenne(humid){
 }
 
 async function updateHumiditerHistorique(humidHist){
-    emptyAndCreateTable('myTableHistoriqueHumid', humidHist)
+    emptyAndCreateTable('myTableHistoriqueHumid', humidHist);
+
+
+
+
+
+    var targetHumidCanvas = document.getElementById('humChart');
+    var canvasHumidContainer = document.getElementById('humidCanvasContainer'); 
+
+    targetHumidCanvas.remove();
+
+    canvasHumidContainer.innerHTML = '<canvas id="humChart"></canvas>'; 
+    var targetHumidCanvas = document.getElementById('humChart');
+
+    xHumLabels = [];
+    yHumData = [];
+    
+    var graphHumData = {
+        labels: xHumLabels,
+        datasets: [{
+          label: 'Humidité',
+          backgroundColor: 'rgb(255, 99, 132)',
+          borderColor: 'rgb(255, 99, 132)',
+          data: yHumData
+        }]
+      };
+    
+    var configHumGraph = {
+        type: 'line',
+        data: graphHumData
+    }
+    
+
+    // MAKES THE GRAPH
+    for(var h = 0; h < humidHist.length; h++){
+        var humidHistVal = humidHist[h];
+        xHumLabels.push(humidHistVal[0]);
+        humidVal = parseFloat(humidHistVal[1].replace('%', '')); 
+        yHumData.push(humidVal);
+    }
+    
+
+    humChart = new Chart(targetHumidCanvas, configHumGraph);
 }
 
 
@@ -244,13 +299,9 @@ function emptyAndCreateTable(tableName, histData){
 
         var rowCount = tableRows.length;
         var row = table.insertRow(rowCount)
-        
-        const entryDate = new Date(rowData[0])
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
-        const entryDateText = entryDate.toLocaleDateString("fr-CA", options)
 
         var cell1 = row.insertCell(0)
-        cell1.innerHTML = entryDateText;
+        cell1.innerHTML = rowData[0];
 
         var cell2 = row.insertCell(1)
         cell2.innerHTML = rowData[1];
