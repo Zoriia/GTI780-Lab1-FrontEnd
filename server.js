@@ -9,7 +9,7 @@ app.get('/', function (req, res) {
 });
 
 app.listen(8081, function () {
-    console.log('Example app listening on port 8080!');
+    alert('Example app listening on port 8080!');
 });
 
 
@@ -26,7 +26,7 @@ app.get('/sensors/temperature/:histValue/avg', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
@@ -44,7 +44,7 @@ app.get('/sensors/temperature/:histValue', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
@@ -61,7 +61,7 @@ app.get('/sensors/temperature', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
@@ -78,7 +78,7 @@ app.get('/sensors/humidity/:histValue/avg', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
@@ -96,7 +96,7 @@ app.get('/sensors/humidity/:histValue', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
@@ -113,7 +113,7 @@ app.get('/sensors/humidity', function (req, res) {
         });
     }
     ).on("error", (err) => {
-        console.log("Error: " + err.message);
+        alert("Error: " + err.message);
     });
 });
 
