@@ -244,9 +244,13 @@ function emptyAndCreateTable(tableName, histData){
 
         var rowCount = tableRows.length;
         var row = table.insertRow(rowCount)
+        
+        const entryDate = new Date(rowData[0])
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const entryDateText = entryDate.toLocaleDateString("fr-CA", options)
 
         var cell1 = row.insertCell(0)
-        cell1.innerHTML = rowData[0];
+        cell1.innerHTML = entryDateText;
 
         var cell2 = row.insertCell(1)
         cell2.innerHTML = rowData[1];
