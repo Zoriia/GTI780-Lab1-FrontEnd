@@ -46,7 +46,7 @@ setInterval(function() {
     } else {
         response.json().then(function(data) {
             //update temp actuelle
-            updateTemperatureActuelle(data.temperature);
+            updateTemperatureActuelle(data);
             
         }).catch(function(err) {
 
@@ -65,7 +65,7 @@ setInterval(function() {
     } else {
         response.json().then(function(data) {
             // update temperature moyenne
-            updateTemperatureMoyenne(data.temperature);
+            updateTemperatureMoyenne(data);
             
         }).catch(function(err) {
             // Alert state with the error, no data
@@ -168,7 +168,7 @@ setInterval(function() {
     } else {
         response.json().then(function(data) {
 
-            updateHumiditerActuelle(data.humidity);
+            updateHumiditerActuelle(data);
             
         }).catch(function(err) {
 
@@ -187,7 +187,7 @@ setInterval(function() {
     } else {
         response.json().then(function(data) {
 
-            updateHumiditerMoyenne(data.humidity);
+            updateHumiditerMoyenne(data);
             
         }).catch(function(err) {
 
@@ -269,7 +269,7 @@ async function updateHumiditerHistorique(humidHist){
     for(var h = 0; h < humidHist.length; h++){
         var humidHistVal = humidHist[h];
         xHumLabels.push(humidHistVal[0]);
-        humidVal = parseFloat(humidHistVal[1].replace('%', '')); 
+        humidVal = parseFloat(humidHistVal[0].replace('%', '')); 
         yHumData.push(humidVal);
     }
     
