@@ -145,7 +145,10 @@ async function updateTemperatureHistorique(tempHist){
     // MAKES THE GRAPH
     for(var i = 0; i < tempHist.length; i++){
         var tempHistVal = tempHist[i];
-        xTempsLabels.push(tempHistVal[0]);
+        const entryDate = new Date(tempHistVal[0])
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const entryDateText = entryDate.toLocaleDateString("fr-CA", options).split(',')[1]
+        xTempsLabels.push(entryDateText);
         yTempData.push(tempHistVal[1]);
     }
     
@@ -268,7 +271,10 @@ async function updateHumiditerHistorique(humidHist){
     // MAKES THE GRAPH
     for(var h = 0; h < humidHist.length; h++){
         var humidHistVal = humidHist[h];
-        xHumLabels.push(humidHistVal[0]);
+        const entryDate = new Date(humidHistVal[0])
+        const options = { hour: 'numeric', minute: 'numeric', second: 'numeric' };
+        const entryDateText = entryDate.toLocaleDateString("fr-CA", options).split(',')[1]
+        xHumLabels.push(entryDateText);
         humidVal = humidHistVal[1]; 
         yHumData.push(humidVal);
     }
