@@ -120,3 +120,7 @@ app.get('/sensors/humidity', function (req, res) {
 app.get('/meteo', function (req, res) {
     res.sendfile('index.html');
 });
+
+app.get('/labo2', function (req, res) {
+    res.sendfile('index2.html');
+});
