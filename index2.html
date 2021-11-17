@@ -1,14 +1,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
 <script type = "text/javascript" language ="javascript">
+
+
 var mqtt;
 var reconnectTimeout = 2000;
 var host ="broker.hivemq.com";
 var port=8000;
 
+var mqttMeteo; 
+var hostPiA = "broker.hivemq.com";
+var portPi=8000;
+var urlHumidite = "/gti780a2021/equipe09/humidite";
+var urlTemp = "/gti780a2021/equipe09/temperature";
+
+var rowReady = false;
+var currentTemp; 
+var currentHumid; 
+var currentTime;
+
+
+function pad(t) {
+  var st = "" + t;
+  
+  while (st.length < 2)
+    st = "0" + st;
+    
+  return st;  
+}
+
+function addRowToMeteoTable(date, temp, humid){
+  
+  var table = document.getElementById("meteoTable");
+  var rowCount = table.rows.length;
+
+
+  // Si la table a deja 10 valeurs, on supprime la derniere
+  if(rowCount == 11){
+    table.deleteRow(rowCount -1);
+  }
+
+  var row = table.insertRow(1);
+  var cellDate = row.insertCell(0);
+  var cellTemp = row.insertCell(1);
+  var cellHumid = row.insertCell(2);
+
+
+  cellDate.innerHTML = date;
+  cellTemp.innerHTML = temp;
+  cellHumid.innerHTML = humid;
+
+}
+
 // Connecting to the topics of different teams. 
 function onConnect() {
-    console.log("Connected");
+    console.log("Connected To Alerts");
     mqtt.subscribe("/gti780a2021alerts/#");
+}
+
+// Connecting to the topics of humidity and temperature
+function onConnectPi() {
+    console.log("Connected To Pi");
+    mqttMeteo.subscribe("/gti780a2021/equipe09/humidite");
+    mqttMeteo.subscribe("/gti780a2021/equipe09/temperature");
 }
 
 // Applying the right alert color to the table.
@@ -27,10 +80,42 @@ function onMessageArrived(msg){
     }
 }
 
-// Connecting to MQTT
+// Applying the right alert color to the table.
+function onMessageArrivedMeteo(msg){
+
+    
+    if(rowReady == false){
+      if(msg.destinationName == urlTemp){
+        // Row is not ready and first value is temperature
+        currentTemp = msg.payloadString + "C"; 
+      }else{
+        // Row is not ready and first value is humidity
+        currentHumid = msg.payloadString + "%"; 
+      }
+      rowReady = true; 
+    }
+    else{
+      if(msg.destinationName == urlTemp){
+        // Row is now ready and second value is temperature
+        currentTemp = msg.payloadString + "C"; 
+      }else{
+        // Row is now ready and second value is humidity
+        currentHumid = msg.payloadString + "%"; 
+      }
+
+      var timestamp = new Date(); 
+      var prettyPrintTimestamp = timestamp.getHours() + ":" + pad(timestamp.getMinutes()) + ":" + pad(timestamp.getSeconds());
+
+      addRowToMeteoTable(prettyPrintTimestamp, currentTemp, currentHumid)
+
+      rowReady = false;
+    }
+}
+
+// Connecting to MQTT alerte
 function MQTTconnect(){
     console.log("connection to " + host +" " + port);
-    mqtt = new Paho.MQTT.Client(host,port,"clientjs")
+    mqtt = new Paho.MQTT.Client(host,port,"clientjs_alerte_equipe09")
     var options = {
         timeout: 3,
         onSuccess: onConnect,
@@ -38,6 +123,22 @@ function MQTTconnect(){
     mqtt.onMessageArrived = onMessageArrived
     mqtt.connect(options);
 }
+
+// Connecting to MQTT meteo
+function MQTTconnectMeteo(){
+    console.log("connection to " + hostPiA +" " + portPi);
+    mqttMeteo = new Paho.MQTT.Client(hostPiA,portPi,"clientjs_meteo_equipe09")
+    var optionsMeteo = {
+        timeout: 3,
+        onSuccess: onConnectPi,
+    };
+    mqttMeteo.onMessageArrived = onMessageArrivedMeteo
+    mqttMeteo.connect(optionsMeteo);
+}
+
+
+
+
 </script>
 <style>
     td, th {
@@ -49,20 +150,20 @@ function MQTTconnect(){
 <h1>Laboratoire 2 (GTI780 - volet applicatif)</h1>
 <script>
     MQTTconnect();
+    MQTTconnectMeteo();
 </script>
+
+
 <h3>Mes capteurs</h3>
-<table>
+<table id="meteoTable">
     <tr>
       <th>Timestamp</th>
       <th>Temperature</th>
       <th>Humidité</th>
     </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table>
+</table>
+
+
 
   <h3>Système d'alerte</h3>
 <table id="alerte">
