@@ -29,17 +29,20 @@ function pad(t) {
 }
 
 function addRowToMeteoTable(date, temp, humid){
-  
+
   var table = document.getElementById("meteoTable");
   var rowCount = table.rows.length;
 
 
   // Si la table a deja 10 valeurs, on supprime la derniere
   if(rowCount == 11){
-    table.deleteRow(rowCount -1);
+    table.deleteRow(1);
   }
 
-  var row = table.insertRow(1);
+  var rowCount = table.rows.length;
+
+  var row = table.insertRow(rowCount);
+
   var cellDate = row.insertCell(0);
   var cellTemp = row.insertCell(1);
   var cellHumid = row.insertCell(2);
@@ -48,6 +51,8 @@ function addRowToMeteoTable(date, temp, humid){
   cellDate.innerHTML = date;
   cellTemp.innerHTML = temp;
   cellHumid.innerHTML = humid;
+
+
 
 }
 
