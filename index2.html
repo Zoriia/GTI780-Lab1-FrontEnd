@@ -8,26 +8,23 @@ var port=8000;
 // Connecting to the topics of different teams. 
 function onConnect() {
     console.log("Connected");
-    mqtt.subscribe("/gti780a2021alerts/equipe01/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe02/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe04/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe05/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe09/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe10/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe11/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe13/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe15/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe16/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe18/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe23/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe07/alert");
-    mqtt.subscribe("/gti780a2021alerts/equipe26/alert");
+    mqtt.subscribe("/gti780a2021alerts/#");
 }
 
 // Applying the right alert color to the table.
 function onMessageArrived(msg){
-    let subString = msg.destinationName.substring(19,27);
-    document.getElementById(subString).style.backgroundColor = "rgb(" + msg.payloadString.replaceAll(';',',') +')';
+    let table = document.getElementById("alerte");
+    let teamName = msg.destinationName.substring(19,27);
+    if(document.getElementById(teamName) == null){
+        var row = table.insertRow(1);
+        var team = row.insertCell(0);
+        var color = row.insertCell(1);
+        team.innerHTML = teamName;
+        color.id = teamName;
+        color.style.backgroundColor = "rgb(" + msg.payloadString.replaceAll(';',',') +')';
+    }else{
+        document.getElementById(teamName).style.backgroundColor = "rgb(" + msg.payloadString.replaceAll(';',',') +')';
+    }
 }
 
 // Connecting to MQTT
@@ -68,64 +65,9 @@ function MQTTconnect(){
   </table>
 
   <h3>Système d'alerte</h3>
-<table>
+<table id="alerte">
     <tr>
       <th>Équipe</th>
       <th>Couleur</th>
     </tr>
-    <tr>
-      <td>01</td>
-      <td id="equipe01"></td>
-    </tr>
-    <tr>
-      <td>02</td>
-      <td id="equipe02"></td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td id="equipe04"></td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td id="equipe05"></td>
-    </tr>
-    <tr>
-        <td >07</td>
-        <td id="equipe07"></td>
-      </tr>   
-    <tr>
-      <td>9</td>
-      <td id="equipe09"></td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td id="equipe10"></td>
-    </tr>    
-    <tr>
-        <td>11</td>
-        <td id="equipe11"></td>
-    </tr>
-    <tr>
-        <td>13</td>
-        <td id="equipe13"></td>
-    </tr>
-    <tr>
-        <td>15</td>
-        <td id="equipe15"></td>
-    </tr>
-    <tr>
-        <td>16</td>
-        <td id="equipe16"></td>
-      </tr>
-      <tr>
-        <td>18</td>
-        <td id="equipe18"></td>
-      </tr>    <tr>
-        <td>23</td>
-        <td id="equipe23"></td>
-      </tr>    
-      <tr>
-        <td>26</td>
-        <td id="equipe26"></td>
-      </tr>    
   </table>
