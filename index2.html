@@ -8,10 +8,10 @@ var host ="broker.hivemq.com";
 var port=8000;
 
 var mqttMeteo; 
-var hostPiA = "broker.hivemq.com";
-var portPi=8000;
-//var hostPiA = "192.168.2.29";
-//var portPi=9001;
+//var hostPiA = "broker.hivemq.com";
+//var portPi=8000;
+var hostPiA = "192.168.2.29";
+var portPi=9001;
 var urlHumidite = "/gti780a2021/equipe09/humidite";
 var urlTemp = "/gti780a2021/equipe09/temperature";
 
@@ -75,14 +75,7 @@ function onConnectPi() {
 function onMessageArrived(msg){
     let table = document.getElementById("alerte");
     let teamName = msg.destinationName.substring(19,27);
-    if(document.getElementById(teamName) == null){
-        var row = table.insertRow(1);
-        var team = row.insertCell(0);
-        var color = row.insertCell(1);
-        team.innerHTML = teamName;
-        color.id = teamName;
-        color.style.backgroundColor = "rgb(" + msg.payloadString.replaceAll(';',',') +')';
-    }else{
+    if(document.getElementById(teamName) != null){        
         document.getElementById(teamName).style.backgroundColor = "rgb(" + msg.payloadString.replaceAll(';',',') +')';
     }
 }
